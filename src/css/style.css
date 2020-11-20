@@ -1,0 +1,41 @@
+#container {
+    position: relative;
+}
+.ship {
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    top: 150px;
+    left: 150px;
+    border-radius: 5px;
+    background-color: #2e8;
+    border-bottom: 4px solid #e55;
+}
+.front {
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    background-color: #ff8;
+    width: 14px;
+    height: 6px;
+}
+.direction {
+    width: 10px;
+    height: 100px;
+    border: 1px solid #96c;
+    position: absolute;
+    top: 400px;
+    left: 250px;
+}
+.direction.index-2{
+    left: 500px;
+}
+.direction.index-3 {
+    left: 750px;
+}
+.head {
+    width: 8px;
+    height: 8px;
+    background-color: rgb(40, 243, 243);
+    margin: 1px;
+}
