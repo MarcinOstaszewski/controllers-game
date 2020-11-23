@@ -1,8 +1,7 @@
 let dirInfo = document.getElementById("dir-info");
 let alertInfo = document.getElementById("alert-info");
 let gameContainer = document.getElementById('container');
-let cars = {};
-let carsDirections = {};
+let cars = {}
 const speed = 1;
 const maxTurn = 2;
 let scrW = window.innerWidth;
@@ -26,13 +25,14 @@ let pi = Math.PI;
 document.addEventListener('DOMContentLoaded', function () {
 
     createCar = (id) => {
-        cars[id] = document.createElement('div');
-        cars[id].setAttribute('id', id);
-        cars[id].classList.add('car');
-        cars[id].style.left = startPositions[id][0];
-        cars[id].style.top = startPositions[id][1];
-        cars[id].style.backgroundColor = colors[id];
-        gameContainer.appendChild(cars[id]);
+        cars[id] = {};
+        cars[id].elem = document.createElement('div');
+        cars[id].elem.setAttribute('id', id);
+        cars[id].elem.classList.add('car');
+        cars[id].elem.style.left = startPositions[id][0];
+        cars[id].elem.style.top = startPositions[id][1];
+        cars[id].elem.style.backgroundColor = colors[id];
+        gameContainer.appendChild(cars[id].elem);
     }
 
     window.addEventListener("gamepadconnected", function (e) {
@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     window.addEventListener("gamepaddisconnected", function (e) {
         let gp = e.gamepad;
-        gameContainer.removeChild(cars[gp.index]);
-        delete cars[gp.index];
+        gameContainer.removeChild(cars[gp.index].elem);
+        delete cars[gp.index].elem;
     });
 
     function gameLoop() {
@@ -69,36 +69,30 @@ document.addEventListener('DOMContentLoaded', function () {
                             degDirection = 180 - ( Math.atan(x0 / y0) / pi * 180 );
                         } 
                         if (degDirection > -500) {
-                            carsDirections[i] = cars[i].style.transform.slice(7, -4);
-                            dirInfo.innerText = parseInt(carsDirections[i]) + "____" + degDirection;
-                            if ((carsDirections[i] - degDirection) > maxTurn) {
-                                alertInfo.innerHTML = "!!!!!!!";// carsDirections[i] + "____" + parseInt(degDirection);
-                                if (carsDirections[i] > 0 && degDirection > 0) {
-                                    console.log( carsDirections[i] - degDirection + " _ " + carsDirections[i] + " _ " + degDirection )
-                                    if ( carsDirections[i] > degDirection ) {
-                                        degDirection = carsDirections[i] + maxTurn;
+                            cars[i].dir = cars[i].elem.style.transform.slice(7, -4);
+                            dirInfo.innerText = parseInt(cars[i].dir) + "____" + degDirection;
+                            if ((cars[i].dir - degDirection) > maxTurn) {
+                                alertInfo.innerHTML = "!!!!!!!";// cars[i].dir + "____" + parseInt(degDirection);
+                                if (cars[i].dir > 0 && degDirection > 0) {
+                                    console.log( cars[i].dir - degDirection + " _ " + cars[i].dir + " _ " + degDirection )
+                                    if ( cars[i].dir > degDirection ) {
+                                        degDirection = cars[i].dir + maxTurn;
                                     } else {
-                                        degDirection = carsDirections[i] - maxTurn;
+                                        degDirection = cars[i].dir - maxTurn;
                                     }
                                 } else {
-                                    console.log("-----" + carsDirections[i] + " _ " + degDirection )
+                                    console.log("-----" + cars[i].dir + " _ " + degDirection )
                                 }
-
                             } else {
                                 alertInfo.innerHTML = "";
                             }
-                            cars[i].style.transform = "rotate(" + parseInt(degDirection) + "deg)";
-
-                            // cars[i].style.transform = "rotate(" + parseInt(degDirection) + "deg)";
-                            //" currDir: " + cars[i].style.transform.slice(7, -4) + " newDir: " + parseInt(degDirection);
+                            cars[i].elem.style.transform = "rotate(" + parseInt(degDirection) + "deg)";
                             directionInRad = degDirection * (pi / 180);
-                            cars[i].style.left = (parseFloat(cars[i].style.left) + (Math.sin(directionInRad) * force) * speed) + "px"; 
-                            cars[i].style.top = (parseFloat(cars[i].style.top) - (Math.cos(directionInRad) * force) * speed) + "px"; 
+                            cars[i].elem.style.left = (parseFloat(cars[i].elem.style.left) + (Math.sin(directionInRad) * force) * speed) + "px"; 
+                            cars[i].elem.style.top = (parseFloat(cars[i].elem.style.top) - (Math.cos(directionInRad) * force) * speed) + "px"; 
                         }
                     }
-                    
                 }
-
             }
         }
 
